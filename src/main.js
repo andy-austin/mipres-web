@@ -7,6 +7,7 @@ import store from "./store";
 import router from "./router";
 import first from "lodash/first";
 import isEmpty from "lodash/isEmpty";
+import isNil from "lodash/isNil";
 
 import {ValidationProvider, extend} from 'vee-validate';
 import {required} from 'vee-validate/dist/rules';
@@ -15,7 +16,8 @@ extend('required', {...required, message: 'This field is required'});
 
 Vue.config.productionTip = false;
 
-Vue.use(VueLodash, {lodash: {first, isEmpty}});
+Vue.use(require('vue-moment'));
+Vue.use(VueLodash, {lodash: {first, isEmpty, isNil}});
 
 new Vue({
     store,

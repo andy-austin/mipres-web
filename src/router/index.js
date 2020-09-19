@@ -1,15 +1,23 @@
 import Vue from "vue";
+import store from "../store";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import AuthLayout from "@/components/AuthLayout";
+import AppLayout from "@/components/AppLayout";
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "/",
-        name: "Home",
-        component: Home
+        path: "",
+        component: AppLayout,
+        children: [
+            {
+                path: "/",
+                name: "Home",
+                component: Home
+            }
+        ],
     },
     {
         path: "",
@@ -30,12 +38,18 @@ const router = new VueRouter({
     routes
 });
 
+const isAuthenticated = ({tempTokenPres, tempTokenProv}) => {
+    return !(Vue.lodash.isEmpty(tempTokenPres) && Vue.lodash.isEmpty(tempTokenProv));
+}
+
 router.beforeEach((to, from, next) => {
-    if (to.name !== 'Login') { //!isAuthenticated
-        next({name: 'Login'});
-    } else {
-        next();
-    }
+    store.dispatch("setToken").then(() => {
+        if (to.name !== 'Login' && !isAuthenticated(store.state)) {
+            next({name: 'Login'});
+        } else {
+            next();
+        }
+    });
 });
 
 export default router;

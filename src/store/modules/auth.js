@@ -1,20 +1,19 @@
 import axios from "axios";
 
 const actions = {
-    doLogin: (event, data) => {
-        // const $promise = axios.post('/Auth/login', {...data});
+    doLogin: ({commit}, data) => {
+        const $promise = axios.post('/login', {...data});
 
-        // $promise.then(response => commit("setToken", response.data));
+        $promise.then(response => commit("authenticate", response.data));
 
-        return axios.post('/login', {...data});
+        return $promise;
     },
-    doLogout: () => {
-        // commit("setToken", {});
-        // Vue.notify({group: 'notifications', clean: true});
-    },
-    // setToken: ({commit}) => {
-    //     commit("setToken", {token: localStorage.getItem("authToken"), userName: localStorage.getItem("userName")});
-    // }
+    setToken: ({commit}) => {
+        commit("authenticate", {
+            temp_token_pres: localStorage.getItem("tempTokenPres") || '',
+            temp_token_prov: localStorage.getItem("tempTokenProv") || ''
+        });
+    }
 };
 
 export default {actions};

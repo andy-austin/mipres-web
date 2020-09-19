@@ -4,9 +4,9 @@
       <div class="card-header">Datos Mipres</div>
       <div class="card-body px-5">
 
-        <AppInput label="NIT" v-model="model.nit" required :validated="validated"></AppInput>
-        <AppInput label="Token Prescriptor" v-model="model.token_prep" required :validated="validated"></AppInput>
-        <AppInput label="Token Proveedor" v-model="model.token_prov" required :validated="validated"></AppInput>
+        <AppInput label="NIT" :model="model.nit" v-model="model.nit" required :validated="validated"></AppInput>
+        <AppInput label="Token Prescriptor" :model="model.token_pres" v-model="model.token_pres" required :validated="validated"></AppInput>
+        <AppInput label="Token Proveedor" :model="model.token_prov" v-model="model.token_prov" required :validated="validated"></AppInput>
 
         <div class="form-group text-center">
           <button type="submit" class="btn btn-primary" :disabled="invalid">Iniciar</button>
@@ -28,9 +28,9 @@ export default {
   data: () => {
     return {
       model: {
-        nit: '',
-        token_prep: '',
-        token_prov: '',
+        nit: '900285194',
+        token_pres: '4963124D-A022-4859-A008-B336025B76DA',
+        token_prov: '4963124D-A022-4859-A008-B336025B76DA',
       }
     };
   },
