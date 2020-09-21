@@ -1,5 +1,5 @@
 import Vue from "vue";
-import store from "../store";
+import store, { isAuthenticated } from "../store";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import AuthLayout from "@/components/AuthLayout";
@@ -37,10 +37,6 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 });
-
-const isAuthenticated = ({tempTokenPres, tempTokenProv}) => {
-    return !(Vue.lodash.isEmpty(tempTokenPres) && Vue.lodash.isEmpty(tempTokenProv));
-}
 
 router.beforeEach((to, from, next) => {
     store.dispatch("setToken").then(() => {

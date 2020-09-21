@@ -1,8 +1,19 @@
 import axios from "axios";
 
 const actions = {
-    doAddressing: (event, data) => {
-        return axios.post('/addressing', {...data});
+    saveAddressing: ({commit}, data) => {
+        const $promise = axios.post('/addressing', {...data});
+
+        $promise.then(
+            () => {
+            },
+            () => commit("logout")
+        );
+
+        return $promise;
+    },
+    getAddressing: (event, {startDate, endDate}) => {
+        return axios.get(`/addressing?startDate=${startDate}&endDate=${endDate}`);
     },
 };
 

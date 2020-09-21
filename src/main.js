@@ -3,7 +3,7 @@ import axios from "axios";
 import App from "./App.vue";
 import VueLodash from "vue-lodash";
 
-import store from "./store";
+import store, {isAuthenticated} from "./store";
 import router from "./router";
 import first from "lodash/first";
 import isEmpty from "lodash/isEmpty";
@@ -27,5 +27,12 @@ new Vue({
 }).$mount("#app");
 
 axios.defaults.baseURL = 'http://127.0.0.1:5000/api';
+
+axios.interceptors.request.use(config => {
+    if (isAuthenticated(store.state)) {
+        return {...config, headers: {...config.headers, Authorization: `Bearer ${store.state.access_token}`}};
+    }
+    return config;
+});
 
 

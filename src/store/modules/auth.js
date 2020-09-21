@@ -9,10 +9,7 @@ const actions = {
         return $promise;
     },
     setToken: ({commit}) => {
-        commit("authenticate", {
-            temp_token_pres: localStorage.getItem("tempTokenPres") || '',
-            temp_token_prov: localStorage.getItem("tempTokenProv") || ''
-        });
+        commit("authenticate", {access_token: localStorage.getItem("access_token") || ''});
     }
 };
 

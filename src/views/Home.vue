@@ -19,10 +19,10 @@
               <div class="card">
                 <div class="card-header text-uppercase">Descargar como</div>
                 <div class="card-body text-center m-2">
-                  <button type="button" class="btn btn-outline-secondary btn-same-w mr-3">
+                  <button type="button" class="btn btn-outline-secondary btn-same-w mr-3" @click="download('csv')">
                     <i class="fa fa-download"></i> CSV
                   </button>
-                  <button type="button" class="btn btn-outline-secondary btn-same-w">
+                  <button type="button" class="btn btn-outline-secondary btn-same-w" @click="download('xlsx')">
                     <i class="fa fa-download"></i> XLSX
                   </button>
                 </div>
@@ -43,19 +43,23 @@ export default {
   components: {DatePicker},
   data() {
     return {
-      dates: null,
+      dates: [],
     };
   },
   methods: {
-    handleChange() {
+    getData() {
       const [start, end] = this.dates;
-      const data = {
+      return {
         startDate: this.$moment(start).format('YYYY-MM-DD'),
         endDate: this.$moment(end).format('YYYY-MM-DD')
-      }
-      this.$store.dispatch("doAddressing", data).then(({data}) => {
-        console.log(data);
-      });
+      };
+    },
+    handleChange() {
+      this.$store.dispatch("saveAddressing", this.getData()).then((response) => console.log(response));
+    },
+    download(extension) {
+      console.log(extension);
+      this.$store.dispatch("getAddressing", this.getData()).then((response) => console.log(response));
     }
   }
 };
