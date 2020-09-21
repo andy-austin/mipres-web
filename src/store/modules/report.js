@@ -12,8 +12,16 @@ const actions = {
 
         return $promise;
     },
-    getAddressing: (event, {startDate, endDate}) => {
-        return axios.get(`/addressing?startDate=${startDate}&endDate=${endDate}`);
+    getAddressing: ({commit}, {startDate, endDate}) => {
+        const $promise = axios.get(`/addressing?startDate=${startDate}&endDate=${endDate}`);
+
+        $promise.then(
+            () => {
+            },
+            () => commit("logout")
+        );
+
+        return $promise;
     },
 };
 

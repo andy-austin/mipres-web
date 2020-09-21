@@ -37,6 +37,7 @@
 
 <script>
 import DatePicker from 'vue2-datepicker';
+import XLSX from 'xlsx';
 
 export default {
   name: "Home",
@@ -58,8 +59,13 @@ export default {
       this.$store.dispatch("saveAddressing", this.getData()).then((response) => console.log(response));
     },
     download(extension) {
-      console.log(extension);
-      this.$store.dispatch("getAddressing", this.getData()).then((response) => console.log(response));
+      this.$store.dispatch("getAddressing", this.getData()).then(({data}) => {
+        const filename = 'direccionamientos';
+        const content = XLSX.utils.json_to_sheet(data.map(item => ({...item, response: JSON.stringify(item.response)})))
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, content, filename);
+        XLSX.writeFile(workbook, `${filename}.${extension}`)
+      });
     }
   }
 };
