@@ -10,7 +10,8 @@
                 <div class="card-header text-uppercase">Desde - Hasta</div>
                 <div class="card-body mt-1">
                   <div class="form-group">
-                    <date-picker v-model="dates" range @close="handleChange"></date-picker>
+                    <date-picker v-model="dates" range @close="handleChange" :disabled-date="disabled"
+                                 @pick="pick"></date-picker>
                   </div>
                 </div>
               </div>
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       dates: [],
+      start: null,
     };
   },
   methods: {
@@ -58,10 +60,16 @@ export default {
     handleChange() {
       this.$store.dispatch("saveAddressing", this.getData()).then((response) => console.log(response));
     },
+    pick(date) {
+      this.start = this.start ? null : this.$moment(date).add(15, 'days');
+    },
+    disabled(date) {
+      return this.start && this.start < this.$moment(date);
+    },
     download(extension) {
       this.$store.dispatch("getAddressing", this.getData()).then(({data}) => {
         const filename = 'direccionamientos';
-        const content = XLSX.utils.json_to_sheet(data.map(item => ({...item, response: JSON.stringify(item.response)})))
+        const content = XLSX.utils.json_to_sheet(data)
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, content, filename);
         XLSX.writeFile(workbook, `${filename}.${extension}`)
