@@ -26,7 +26,7 @@ new Vue({
     components: {ValidationProvider}
 }).$mount("#app");
 
-axios.defaults.baseURL = 'http://127.0.0.1:5000/api';
+axios.defaults.baseURL = 'http://157.245.7.224/api';
 
 axios.interceptors.request.use(config => {
     if (isAuthenticated(store.state)) {
