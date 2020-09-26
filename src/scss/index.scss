@@ -4,6 +4,16 @@
 
 .btn {
   &.btn-same-w {
-    width: 100px;
+    width: 120px;
+  }
+}
+
+.card-body-height {
+  min-height: 93px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

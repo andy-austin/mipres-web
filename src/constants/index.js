@@ -1,0 +1,23 @@
+export const addressing_headers = [
+    'ID',
+    'IDDireccionamiento',
+    'NoPrescripcion',
+    'TipoTec',
+    'ConTec',
+    'TipoIDPaciente',
+    'NoIDPaciente',
+    'NoEntrega',
+    'NoSubEntrega',
+    'TipoIDProv',
+    'NoIDProv',
+    'CodMunEnt',
+    'FecMaxEnt',
+    'CantTotAEntregar',
+    'DirPaciente',
+    'CodSerTecAEntregar',
+    'NoIDEPS',
+    'CodEPS',
+    'FecDireccionamiento',
+    'EstDireccionamiento',
+    'FecAnulacion'
+];
