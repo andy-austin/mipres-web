@@ -96,9 +96,8 @@ export default {
       return this.start && this.start < this.$moment(date);
     },
     download(extension) {
-      const data = this.getData();
-      this.$store.dispatch("getAddressing", data).then(({data}) => {
-        downloadFile(extension, this.$store.state.nit, data);
+      this.$store.dispatch("getAddressing", this.getData()).then(({data}) => {
+        downloadFile(extension, { ...this.getData(), nit: this.$store.state.nit }, data);
       });
     },
     logout() {
