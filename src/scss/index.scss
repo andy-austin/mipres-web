@@ -4,7 +4,7 @@
 
 .btn {
   &.btn-same-w {
-    width: 120px;
+    width: 100px;
   }
 }
 
@@ -15,5 +15,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.card {
+  .card-header {
+    &.card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .btn-sm {
+        line-height: 1.2;
+      }
+    }
   }
 }

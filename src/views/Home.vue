@@ -2,10 +2,16 @@
   <div class="row">
     <div class="col-12">
       <div class="card border-primary">
-        <div class="card-header bg-primary text-uppercase text-white">Direccionamiento</div>
+        <div class="card-header bg-primary text-uppercase text-white card-actions">
+          Direccionamiento
+          <span class="text-right">
+            <span class="badge badge-light">NIT - {{ $store.state.nit }}</span>
+            <button class="btn btn-outline-light btn-sm ml-2" @click="logout">Salir</button>
+          </span>
+        </div>
         <div class="card-body">
-          <div class="row row-cols-2">
-            <div class="col-4">
+          <div class="row row-cols-md-2">
+            <div class="col-md-4 mb-3">
               <div class="card">
                 <div class="card-header text-uppercase">Desde - Hasta</div>
                 <div class="card-body mt-1">
@@ -14,13 +20,17 @@
                   </div>
                 </div>
                 <div class="card-footer text-center">
-                  <button type="button" class="btn btn-primary btn-same-w" @click="searchAddresses" :disabled="!dates.length">
+                  <button
+                      type="button"
+                      class="btn btn-primary btn-same-w"
+                      @click="searchAddresses"
+                      :disabled="!dates.length">
                     Aceptar
                   </button>
                 </div>
               </div>
             </div>
-            <div class="col-8">
+            <div class="col-md-8">
               <div class="card">
                 <div class="card-header text-uppercase">Descargar como</div>
                 <div class="card-body card-body-height text-center text-muted">
@@ -29,10 +39,16 @@
                   </div>
                 </div>
                 <div class="card-footer text-center">
-                  <button type="button" class="btn btn-outline-primary btn-same-w mr-3" @click="download('csv')" :disabled="loading || !dates.length">
+                  <button type="button"
+                          class="btn btn-outline-primary btn-same-w mr-3"
+                          @click="download('csv')"
+                          :disabled="loading || !dates.length">
                     <i class="fa" :class="loading ? 'fa-cog fa-spin' : 'fa-file-code-o'"></i> CSV
                   </button>
-                  <button type="button" class="btn btn-outline-primary btn-same-w" @click="download('xlsx')" :disabled="loading || !dates.length">
+                  <button type="button"
+                          class="btn btn-outline-primary btn-same-w"
+                          @click="download('xlsx')"
+                          :disabled="loading || !dates.length">
                     <i class="fa" :class="loading ? 'fa-cog fa-spin' : 'fa-file-excel-o'"></i> XLSX
                   </button>
                 </div>
@@ -47,8 +63,7 @@
 
 <script>
 import DatePicker from 'vue2-datepicker';
-import XLSX from 'xlsx';
-import {addressing_headers} from "@/constants";
+import {downloadFile} from "@/services/file";
 
 export default {
   name: "Home",
@@ -81,13 +96,13 @@ export default {
       return this.start && this.start < this.$moment(date);
     },
     download(extension) {
-      this.$store.dispatch("getAddressing", this.getData()).then(({data}) => {
-        const filename = 'direccionamientos';
-        const content = XLSX.utils.json_to_sheet(data, {header: addressing_headers})
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, content, filename);
-        XLSX.writeFile(workbook, `${filename}.${extension}`)
+      const data = this.getData();
+      this.$store.dispatch("getAddressing", data).then(({data}) => {
+        downloadFile(extension, this.$store.state.nit, data);
       });
+    },
+    logout() {
+      this.$store.commit('logout');
     }
   }
 };

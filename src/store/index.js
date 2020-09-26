@@ -8,15 +8,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        access_token: '',
+        nit: '',
+        access_token: ''
     },
     mutations: {
-        authenticate: (state, {access_token}) => {
+        authenticate: (state, {access_token, nit}) => {
+            state.nit = nit;
             state.access_token = access_token;
+            localStorage.setItem('nit', nit);
             localStorage.setItem('access_token', access_token);
         },
         logout: (state) => {
+            state.nit = '';
             state.access_token = '';
+            localStorage.removeItem('nit');
             localStorage.removeItem('access_token');
             router.push("/login").then(() => {
             });
