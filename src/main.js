@@ -15,7 +15,7 @@ import {required} from 'vee-validate/dist/rules';
 /**
  * Socket.io connection
  **/
-const socket = io(process.env.VUE_APP_BASE_URL);
+const socket = io(process.env.VUE_APP_BASE_URL, {transports: ['websocket']});
 
 /**
  * Error messages configuration
