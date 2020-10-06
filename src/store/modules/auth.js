@@ -9,10 +9,10 @@ const actions = {
         return $promise;
     },
     setToken: ({commit}) => {
-        commit("authenticate", {
-            access_token: localStorage.getItem("access_token") || '',
-            nit: localStorage.getItem("nit") || ''
-        });
+        const nit = localStorage.getItem("nit");
+        const access_token = localStorage.getItem("access_token");
+
+        commit("authenticate", {access_token, nit});
     }
 };
 

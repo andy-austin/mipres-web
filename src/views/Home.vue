@@ -16,7 +16,7 @@
                 <div class="card-header text-uppercase">Desde - Hasta</div>
                 <div class="card-body mt-1">
                   <div class="form-group">
-                    <date-picker v-model="dates" range :disabled-date="disabled" @pick="pick"></date-picker>
+                    <date-picker v-model="dates" range @pick="pick"></date-picker>
                   </div>
                 </div>
                 <div class="card-footer text-center">
@@ -34,22 +34,23 @@
               <div class="card">
                 <div class="card-header text-uppercase">Descargar como</div>
                 <div class="card-body card-body-height text-center text-muted">
-                  <div v-if="loading">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x mr-2"></i> Cargando...
+                  <div v-if="$store.state.report.loading">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x mr-2"></i>
+                    Cargando... ({{ $store.state.report.percent }}%)
                   </div>
                 </div>
                 <div class="card-footer text-center">
                   <button type="button"
                           class="btn btn-outline-primary btn-same-w mr-3"
                           @click="download('csv')"
-                          :disabled="loading || !dates.length">
-                    <i class="fa" :class="loading ? 'fa-cog fa-spin' : 'fa-file-code-o'"></i> CSV
+                          :disabled="$store.state.report.loading || !dates.length">
+                    <i class="fa" :class="$store.state.report.loading ? 'fa-cog fa-spin' : 'fa-file-code-o'"></i> CSV
                   </button>
                   <button type="button"
                           class="btn btn-outline-primary btn-same-w"
                           @click="download('xlsx')"
-                          :disabled="loading || !dates.length">
-                    <i class="fa" :class="loading ? 'fa-cog fa-spin' : 'fa-file-excel-o'"></i> XLSX
+                          :disabled="$store.state.report.loading || !dates.length">
+                    <i class="fa" :class="$store.state.report.loading ? 'fa-cog fa-spin' : 'fa-file-excel-o'"></i> XLSX
                   </button>
                 </div>
               </div>
@@ -71,8 +72,7 @@ export default {
   data() {
     return {
       dates: [],
-      start: null,
-      loading: false
+      start: null
     };
   },
   methods: {
@@ -84,20 +84,14 @@ export default {
       };
     },
     searchAddresses() {
-      this.loading = true;
-      this.$store.dispatch("saveAddressing", this.getData()).then(() => {
-        this.loading = false;
-      });
+      this.$store.dispatch("saveAddressing", this.getData());
     },
     pick(date) {
       this.start = this.start ? null : this.$moment(date).add(15, 'days');
     },
-    disabled(date) {
-      return this.start && this.start < this.$moment(date);
-    },
     download(extension) {
       this.$store.dispatch("getAddressing", this.getData()).then(({data}) => {
-        downloadFile(extension, { ...this.getData(), nit: this.$store.state.nit }, data);
+        downloadFile(extension, {...this.getData(), nit: this.$store.state.nit}, data);
       });
     },
     logout() {

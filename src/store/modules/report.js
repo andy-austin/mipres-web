@@ -1,28 +1,43 @@
 import axios from "axios";
 
+const state = {
+    loading: false,
+    percent: 0
+}
+
+const mutations = {
+    updateState: (state, {percent, user}) => {
+        console.log(user, percent);
+        state.loading = percent !== 100;
+        state.percent = percent;
+    },
+}
+
 const actions = {
-    saveAddressing: ({commit}, data) => {
+    saveAddressing: (event, data) => {
         const $promise = axios.post('/addressing', {...data});
 
         $promise.then(
             () => {
             },
-            () => commit("logout")
+            () => {
+            }
         );
 
         return $promise;
     },
-    getAddressing: ({commit}, {startDate, endDate}) => {
+    getAddressing: (event, {startDate, endDate}) => {
         const $promise = axios.get(`/addressing?startDate=${startDate}&endDate=${endDate}`);
 
         $promise.then(
             () => {
             },
-            () => commit("logout")
+            () => {
+            }
         );
 
         return $promise;
     },
 };
 
-export default {actions};
+export default {state, actions, mutations};
